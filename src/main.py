@@ -7,10 +7,8 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
-
-
-
 import pathlib
+
 data_dir = pathlib.Path('/Users/Wcutt/tf_files')
 
 image_count = len(list(data_dir.glob('*/*.jpg')))
