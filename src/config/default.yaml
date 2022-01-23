@@ -1,0 +1,29 @@
+templateVersion: 1.21.7
+parameters:
+  image:
+    height: 360
+    width: 360
+  epochs: 10
+  dataset:
+    split: 0.2
+    batchSize: 32
+    seed: 123
+    training:
+      shuffle: 1000
+      prefetch: True
+    validation:
+      shuffle: -1
+      prefecth: True
+  model:
+    useAugmentation: True
+    augmentation:
+      randomFlip: horizontal
+      randomRotation: 0.1
+      randomZoom: 0.1
+    dropout: 0.2
+    rescaling: 0.00392156862745098 # 1 / 255
+    compile:
+      optimizer: adam
+      metrics:
+        - accuracy
+    layerUnits: 128
