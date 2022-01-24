@@ -3,7 +3,7 @@ import os
 import tkinter
 from datetime import datetime
 from image_classifier import predict_data
-
+from ctypes import *
 
 def begin_watch(model, watch_config):
     scan_frequency = watch_config['frequency'] * 30  # fps
@@ -23,11 +23,10 @@ def begin_watch(model, watch_config):
 
         key = cv2.waitKey(1)
         if key % 256 == 27:
-            # ESC pressed
+            # ESC key
             print("Ending watch")
             break
         elif frame_count % scan_frequency == 0:
-            # SPACE pressed
             cv2.imwrite("sample_frame.png", frame)
             print("Sample captured")
             prediction = predict_data(model)
@@ -47,13 +46,15 @@ def begin_watch(model, watch_config):
     return alarm_triggered
 
 
-def popup_alert():
+def alert(config):
     now = datetime.now()
     date_time = now.strftime("%H:%M:%S, %m/%d/%Y")
-    tk = tkinter.Tk()
-    tk.title("FireEye Alert")
     message = f"WARNING: A FIRE HAS BEEN DETECTED IN THE AREA.\nTime of detection: {date_time}"
 
-    tkinter.Label(tk, text=message).grid(column=0, row=0, padx=20, pady=30)
-    tk.mainloop()
-
+    if config['style'] == 0:
+        print(message)
+    elif config['style'] == 1:
+        tk = tkinter.Tk()
+        tk.title("FireEye Alert")
+        tkinter.Label(tk, text=message).grid(column=0, row=0, padx=20, pady=30)
+        tk.mainloop()

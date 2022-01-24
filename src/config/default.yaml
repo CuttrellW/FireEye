@@ -31,3 +31,5 @@ parameters:
     frequency: 2
     confidenceThreshold: 90
     deleteTriggerFrame: True
+  alert:
+    style: 0

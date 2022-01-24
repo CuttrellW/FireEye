@@ -60,4 +60,4 @@ if __name__ == '__main__':
 
     # Alert if fire detected
     if alert:
-        popup_alert()
+        alert(config['alert'])
