@@ -1,9 +1,7 @@
 import matplotlib.pyplot as plt
-import numpy as np
-import os
-import PIL
 import yaml
 from image_classifier import ImageClassifier
+from detection import *
 
 CONFIG_PATH = 'config/default.yaml'
 
@@ -50,12 +48,16 @@ if __name__ == '__main__':
 
     # Create and Compile Model
     model = ic.create_model()
-    model.summary()
 
     # Train Model and Capture Result Metrics
     data = ic.train_model(model, training_dataset, validation_dataset)
 
     # Plot data
-    plot_history(data, range(ic.epochs))
+    # plot_history(data, range(ic.epochs))
 
+    # Begin watch for fire
+    alert = begin_watch(model, parameters['watch'])
 
+    # Alert if fire detected
+    if alert:
+        alert(config['alert'])

@@ -1,9 +1,6 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import os
-import PIL
 import tensorflow as tf
-
+import numpy
+import json
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
@@ -22,6 +19,7 @@ class ImageClassifier:
         self.image_width = self.parameters['image']['width']
         self.image_height = self.parameters['image']['height']
         self.epochs = self.parameters['epochs']
+
 
     def load_dataset(self, subset):
         ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -96,3 +94,31 @@ class ImageClassifier:
         )
 
         return history
+
+
+def predict_data(model):
+    classes = ['fire', 'no-fire']
+    model_json = json.loads(model.to_json())
+    height = model_json['config']['layers'][0]['config']['batch_input_shape'][1]
+    width = model_json['config']['layers'][0]['config']['batch_input_shape'][2]
+
+    img = tf.keras.utils.load_img(
+        'sample_frame.png',
+        target_size=(height, width)
+    )
+
+    img_array = tf.keras.utils.img_to_array(img)
+    img_array = tf.expand_dims(img_array, 0)  # Create a batch
+
+    predictions = model.predict(img_array)
+    score = tf.nn.softmax(predictions[0])
+
+    prediction_class = classes[numpy.argmax(score)]
+    confidence_score = 100 * numpy.max(score)
+
+    print(f"Prediciton: {prediction_class} \nConfidence score: {confidence_score}")
+
+    resp = {"class": prediction_class, "score": confidence_score}
+
+    return resp
+

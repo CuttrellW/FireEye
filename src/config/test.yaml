@@ -3,7 +3,7 @@ parameters:
   image:
     height: 360
     width: 360
-  epochs: 10
+  epochs: 1
   dataset:
     split: 0.2
     batchSize: 32
