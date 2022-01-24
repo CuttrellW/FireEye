@@ -3,3 +3,4 @@ numpy
 tensorflow
 pillow
 pyyaml
+opencv-python

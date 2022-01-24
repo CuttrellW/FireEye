@@ -1,9 +1,5 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import os
-import PIL
 import tensorflow as tf
-
+import numpy
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
@@ -22,6 +18,7 @@ class ImageClassifier:
         self.image_width = self.parameters['image']['width']
         self.image_height = self.parameters['image']['height']
         self.epochs = self.parameters['epochs']
+        self.classes = ['fire', 'no-fire']
 
     def load_dataset(self, subset):
         ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -96,3 +93,24 @@ class ImageClassifier:
         )
 
         return history
+
+    def predict_data(self, model):
+
+        img = tf.keras.utils.load_img(
+            'sample_frame.png', target_size=(self.image_height, self.image_width)
+        )
+
+        img_array = tf.keras.utils.img_to_array(img)
+        img_array = tf.expand_dims(img_array, 0)  # Create a batch
+
+        predictions = model.predict(img_array)
+        score = tf.nn.softmax(predictions[0])
+
+        print(
+            "Class: {} \nConfidence score: {}"
+            .format(self.classes[numpy.argmax(score)], 100 * numpy.max(score))
+        )
+
+        resp = {"class": self.classes[numpy.argmax(score)], "score": 100 * numpy.max(score)}
+
+        return resp
