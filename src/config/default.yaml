@@ -27,3 +27,7 @@ parameters:
       metrics:
         - accuracy
     layerUnits: 128
+  watch:
+    frequency: 2
+    confidenceThreshold: 90
+    deleteTriggerFrame: True

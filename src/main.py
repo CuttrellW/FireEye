@@ -1,10 +1,7 @@
-import time
-
 import matplotlib.pyplot as plt
 import yaml
-import cv2
-import os
 from image_classifier import ImageClassifier
+from detection import *
 
 CONFIG_PATH = 'config/default.yaml'
 
@@ -51,50 +48,16 @@ if __name__ == '__main__':
 
     # Create and Compile Model
     model = ic.create_model()
-    model.summary()
 
     # Train Model and Capture Result Metrics
     data = ic.train_model(model, training_dataset, validation_dataset)
 
     # Plot data
-
     # plot_history(data, range(ic.epochs))
 
-    vid = cv2.VideoCapture(0)
+    # Begin watch for fire
+    alert = begin_watch(model, parameters['watch'])
 
-    cv2.namedWindow("test")
-
-    frame_count = 1
-
-    fire_detected = False
-    while not fire_detected:
-        ret, frame = vid.read()
-        if not ret:
-            print("failed to grab frame")
-            break
-        cv2.imshow("test", frame)
-
-        k = cv2.waitKey(1)
-        if k % 256 == 27:
-            # ESC pressed
-            print("Escape hit, closing...")
-            break
-        elif frame_count % 60 == 0:
-            # SPACE pressed
-            cv2.imwrite("sample_frame.png", frame)
-            print("Sample captured")
-            prediction = ic.predict_data(model)
-            if prediction['class'] == 'fire' and prediction['score'] > 90:
-                fire_detected = True
-
-        frame_count += 1
-
-    vid.release()
-
-    cv2.destroyAllWindows()
-    os.remove("sample_frame.png")
-
-    if fire_detected:
-        while True:
-            print("OH NO THERES A FIRE")
-
+    # Alert if fire detected
+    if alert:
+        popup_alert()
