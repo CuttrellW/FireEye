@@ -6,7 +6,7 @@ from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 import pathlib
 
-DATASET_PATH = './datasets'
+DATASET_PATH = '../fire_dataset'
 
 
 class ImageClassifier:

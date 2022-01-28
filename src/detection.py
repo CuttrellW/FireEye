@@ -5,6 +5,7 @@ from datetime import datetime
 from image_classifier import predict_data
 from ctypes import *
 
+
 def begin_watch(model, watch_config):
     scan_frequency = watch_config['frequency'] * 30  # fps
     alarm_threshold = watch_config['confidenceThreshold']
