@@ -6,7 +6,7 @@ import yaml
 from image_classifier import ImageClassifier
 from detection import *
 
-CONFIG_PATH = 'config/test.yaml'
+CONFIG_PATH = 'config/default.yaml'
 
 
 def load_config_file(filename):
