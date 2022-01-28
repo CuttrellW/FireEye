@@ -1,9 +1,12 @@
+import time
+
 import matplotlib.pyplot as plt
+import matplotlib
 import yaml
 from image_classifier import ImageClassifier
 from detection import *
 
-CONFIG_PATH = 'config/default.yaml'
+CONFIG_PATH = 'config/test.yaml'
 
 
 def load_config_file(filename):
@@ -48,16 +51,25 @@ if __name__ == '__main__':
 
     # Create and Compile Model
     model = ic.create_model()
+    model.summary()
 
     # Train Model and Capture Result Metrics
     data = ic.train_model(model, training_dataset, validation_dataset)
 
-    # Plot data
-    # plot_history(data, range(ic.epochs))
-
-    # Begin watch for fire
-    alert = begin_watch(model, parameters['watch'])
-
-    # Alert if fire detected
-    if alert:
-        alert(config['alert'])
+    selection = 0
+    while selection != '3':
+        print("\nPlease choose an option:\n1) Begin Watch\n2) Plot training data\n3) Exit program\n")
+        selection = input("Type option # and press enter:\n")
+        if selection == '1':
+            # Begin watch for fire
+            alert = begin_watch(model, parameters['watch'])
+            # Alert if fire detected
+            if alert:
+                alert(config['alert'])
+        elif selection == '2':
+            # Plot data
+            plot_history(data, range(ic.epochs))
+        elif selection == '3':
+            pass
+        else:
+            print("Selection not recognized. Please try again\n")
