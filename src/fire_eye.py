@@ -65,7 +65,7 @@ if __name__ == '__main__':
             alert = begin_watch(model, parameters['watch'])
             # Alert if fire detected
             if alert:
-                alert(config['alert'])
+                alert(parameters['alert'])
         elif selection == '2':
             # Plot data
             plot_history(data, range(ic.epochs))
